@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout
+    android:id="@+id/widget0"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <EditText
+        android:id="@+id/txtLogin"
+        android:layout_width="157dp"
+        android:layout_height="50dp"
+        android:text="Login"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_x="77dp"
+        android:layout_y="104dp" />
+    
+    <EditText
+        android:id="@+id/txtSenha"
+        android:layout_width="157dp"
+        android:layout_height="51dp"
+        android:text="Senha"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:password="true"
+        android:layout_x="76dp"
+        android:layout_y="171dp" />
+    
+    <Button
+        android:id="@+id/btLogin"
+        android:onClick="onClickbtLogin"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:text="Logar"
+        android:gravity="center"
+        android:layout_x="74dp"
+        android:layout_y="241dp" />
+</AbsoluteLayout>
+
