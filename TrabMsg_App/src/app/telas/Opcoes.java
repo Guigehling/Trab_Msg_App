@@ -5,6 +5,7 @@
 package app.telas;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -40,8 +41,21 @@ public class Opcoes extends Activity implements OnItemClickListener {
     public void onItemClick(AdapterView<?> av, View view, int i, long l) {
         //Pega o item que foi selecionado.
         ItemOpcao item = lista.getItem(i);
+        if ("Nova Msg".equals(item.getAcao())) {
+            Intent intent = new Intent(this, ListMsgEnviadas.class);
+            startActivity(intent);
+        }
+        if ("Recebidas".equals(item.getAcao())) {
+            Intent intent = new Intent(this, ListMsgEnviadas.class);
+            startActivity(intent);
+        }
+        if ("Enviadas".equals(item.getAcao())) {
+            Intent intent = new Intent(this, ListMsgEnviadas.class);
+            startActivity(intent);
+        }
+
         //Demostração
-        Toast.makeText(this, "Você Clicou em: " + item.getAcao(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Você Clicou em: " + item.getAcao(), Toast.LENGTH_LONG).show();
     }
 
     private void createListView() {
@@ -49,7 +63,7 @@ public class Opcoes extends Activity implements OnItemClickListener {
         itens = new ArrayList<ItemOpcao>();
         ItemOpcao item1 = new ItemOpcao("Nova Msg");
         ItemOpcao item2 = new ItemOpcao("Recebidas");
-        ItemOpcao item3 = new ItemOpcao("Eviadas");
+        ItemOpcao item3 = new ItemOpcao("Enviadas");
 
         itens.add(item1);
         itens.add(item2);

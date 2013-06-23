@@ -24,7 +24,7 @@ public class BancoDados extends SQLiteOpenHelper {
                 + "FOREIGN KEY (destinatario) REFERENCES departamento (cod_usr));");
         sqld.execSQL("CREATE TABLE recebidas (cod_msg INTEGER PRIMARY KEY AUTOINCREMENT, conteudo TEXT, remetente INTEGER, "
                 + "FOREIGN KEY (remetente) REFERENCES usuario (cod_usr));");
-        sqld.execSQL("CREATE TABLE usuario (cod_usr INTEGER PRIMARY KEY AUTOINCREMENT, login TEXT NOT NULL, senha TEXT, logado INTEGER)");
+        sqld.execSQL("CREATE TABLE usuario (cod_usr INTEGER PRIMARY KEY AUTOINCREMENT, login TEXT NOT NULL, logado INTEGER)");
     }
 
     @Override

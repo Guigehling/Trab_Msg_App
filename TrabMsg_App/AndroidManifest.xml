@@ -14,5 +14,7 @@
         </activity>
         <activity android:name="Opcoes" 
                   android:label="Opções"/>
+        <activity android:name="ListMsgEnviadas" 
+                  android:label="Msg. Enviadas"/>
     </application>
 </manifest> 

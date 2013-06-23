@@ -37,8 +37,12 @@ public class Inicial extends Activity {
         UsuarioDAO usrDAO = new UsuarioDAO(this);
         Usuario usr = new Usuario();
         usr.setLogin(txtLogin.getText().toString());
+        usr.setCod_usr(1);
         usr.setLogado(1);
         usrDAO.create(usr);
+        Usuario usr2 = new Usuario();
+        usr2 = usrDAO.retrive();
+        System.out.println(usr2.getLogin());
     }
 
     public void testLogin() {

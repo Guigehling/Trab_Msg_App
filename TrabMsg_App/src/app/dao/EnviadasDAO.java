@@ -31,7 +31,7 @@ public class EnviadasDAO {
         ContentValues valores = new ContentValues();
         valores.put("cod_msg", mensagem.getCod_msg());
         valores.put("conteudo", mensagem.getCod_msg());
-        valores.put("destinatario", mensagem.getCod_msg());
+       // valores.put("destinatario", mensagem.getCod_msg());
         conn.insert("enviadas", null, valores);
         conn.close();
     }

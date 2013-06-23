@@ -29,11 +29,28 @@ public class UsuarioDAO {
         BancoDados bd = new BancoDados(context);
         SQLiteDatabase conn = bd.getWritableDatabase();
         ContentValues valores = new ContentValues();
-        valores.put("cod_user", usuario.getCod_usr());
+        //valores.put("cod_user", usuario.getCod_usr());
         valores.put("login", usuario.getLogin());
         valores.put("logado", usuario.getLogado());
         conn.insert("usuario", null, valores);
         conn.close();
+    }
+
+    public Usuario retrive() {
+        Usuario usr = new Usuario();
+        BancoDados bd = new BancoDados(context);
+        SQLiteDatabase conn = bd.getWritableDatabase();
+        Cursor cursor = conn.rawQuery("SELECT * FROM usuario", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Usuario usuario = new Usuario();
+            usuario.setCod_usr(cursor.getInt(0));
+            usuario.setLogin(cursor.getString(1));
+            usr = usuario;
+            cursor.moveToNext();
+        }
+        conn.close();
+        return usr;
     }
 
     public List<Usuario> listContact(Usuario logado) {
