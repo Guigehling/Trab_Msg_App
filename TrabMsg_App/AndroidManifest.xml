@@ -12,7 +12,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="Menu" 
-                  android:label="Menus"/>
+        <activity android:name="Opcoes" 
+                  android:label="Opções"/>
     </application>
 </manifest> 

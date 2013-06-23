@@ -7,6 +7,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.EditText;
+import app.bean.Usuario;
+import app.dao.UsuarioDAO;
+import java.io.DataInputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -30,12 +33,17 @@ public class Inicial extends Activity {
     public void onClickbtLogin(View v) throws InterruptedException {
         Thread t = new Thread(new ConexaoWWW());
         t.start();
-        //this.testLogin();
+        EditText txtLogin = (EditText) findViewById(R.id.txtLogin);
+        UsuarioDAO usrDAO = new UsuarioDAO(this);
+        Usuario usr = new Usuario();
+        usr.setLogin(txtLogin.getText().toString());
+        usr.setLogado(1);
+        usrDAO.create(usr);
     }
 
     public void testLogin() {
         if ("Ok".equals(msg)) {
-            Intent intent = new Intent(this, Menu.class);
+            Intent intent = new Intent(this, Opcoes.class);
             startActivity(intent);
         } else {
             System.out.println("Erro!");
@@ -64,7 +72,10 @@ public class Inicial extends Activity {
                 OutputStream os = httpConn.getOutputStream();
                 os.write(("acao=Logar&login=" + login + "&senha=" + senha).getBytes());
                 os.close();
-                msg = httpConn.getResponseMessage();
+                String ret = httpConn.getResponseMessage();
+                int code = httpConn.getResponseCode();
+                DataInputStream dis = new DataInputStream(httpConn.getInputStream());
+                msg = dis.readUTF();
                 manipulador.sendEmptyMessage(0);
             } catch (Exception ex) {
 //                Display display = Display.getDisplay(mid);
