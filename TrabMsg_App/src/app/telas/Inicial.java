@@ -55,7 +55,8 @@ public class Inicial extends Activity {
 
         public void run() {
             try {
-                URL urlObj = new URL("http://192.168.0.100:8080/TrabMsgWeb/ServletMsg");
+                //URL("http://192.168.0.100:8080/TrabMsgWeb/ServletMsg");
+                URL urlObj = new URL("http://10.13.1.81:8080/TrabMsgWeb/ServletMsg");
                 HttpURLConnection httpConn = (HttpURLConnection) urlObj.openConnection();
                 httpConn.setDoInput(true);
                 httpConn.setDoOutput(true);

@@ -27,7 +27,6 @@ public class UsuarioDAO {
 
     public void create(Usuario usuario) {
         BancoDados bd = new BancoDados(context);
-        BancoDados bd2 = new BancoDados(context);
         SQLiteDatabase conn = bd.getWritableDatabase();
         ContentValues valores = new ContentValues();
         valores.put("login", usuario.getLogin());

@@ -56,7 +56,7 @@ public class ListMsgRecebidas extends ListActivity {
         public void run() {
             int contaEnviadas = 0;
             try {
-                URL urlObj = new URL("http://192.168.0.100:8080/TrabMsgWeb/ServletMsg");
+                URL urlObj = new URL("http://10.13.1.81:8080/TrabMsgWeb/ServletMsg");
                 HttpURLConnection httpConn = (HttpURLConnection) urlObj.openConnection();
                 httpConn.setDoInput(true);
                 httpConn.setDoOutput(true);
