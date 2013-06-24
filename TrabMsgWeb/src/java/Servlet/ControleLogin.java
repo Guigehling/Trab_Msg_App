@@ -38,7 +38,7 @@ public class ControleLogin {
         Usuario usuario = usrDao.achaLogin(login);
         if (usuario == null || !usuario.validaSenha(senha)) {
             ServletMsg.dispatcherErro(req, resp, String.format("Usuário ou Senha Inválidos.[%s]", login));
-            return;
+//            return;
         } else {
             OutputStream out = resp.getOutputStream();
             DataOutputStream dos = new DataOutputStream(out);
