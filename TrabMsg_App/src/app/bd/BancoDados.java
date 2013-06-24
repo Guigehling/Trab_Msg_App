@@ -20,7 +20,7 @@ public class BancoDados extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqld) {
-        sqld.execSQL("CREATE TABLE enviadas (cod_msg INTEGER PRIMARY KEY AUTOINCREMENT, conteudo TEXT, destinatario INTEGER,"
+        sqld.execSQL("CREATE TABLE enviadas (cod_msg INTEGER PRIMARY KEY AUTOINCREMENT, conteudo TEXT, destinatario INTEGER)"
                 + "FOREIGN KEY (destinatario) REFERENCES departamento (cod_usr));");
         sqld.execSQL("CREATE TABLE recebidas (cod_msg INTEGER PRIMARY KEY AUTOINCREMENT, conteudo TEXT, remetente INTEGER, "
                 + "FOREIGN KEY (remetente) REFERENCES usuario (cod_usr));");

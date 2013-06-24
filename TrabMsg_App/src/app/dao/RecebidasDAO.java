@@ -29,7 +29,6 @@ public class RecebidasDAO {
         BancoDados bd = new BancoDados(context);
         SQLiteDatabase conn = bd.getWritableDatabase();
         ContentValues valores = new ContentValues();
-        valores.put("cod_msg", mensagens.getCod_msg());
         valores.put("conteudo", mensagens.getConteudo());
         valores.put("remetente", mensagens.getRemetente());
         conn.insert("recebidas", null, valores);

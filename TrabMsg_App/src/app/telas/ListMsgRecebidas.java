@@ -10,9 +10,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.ArrayAdapter;
-import app.bean.Enviadas;
+import app.bean.Recebidas;
 import app.bean.Usuario;
-import app.dao.EnviadasDAO;
+import app.dao.RecebidasDAO;
 import app.dao.UsuarioDAO;
 import java.io.DataInputStream;
 import java.io.OutputStream;
@@ -25,13 +25,13 @@ import java.util.List;
  *
  * @author Guilherme Gehling
  */
-public class ListMsgEnviadas extends ListActivity {
+public class ListMsgRecebidas extends ListActivity {
 
     private List lista = new ArrayList();
     Usuario usr = new Usuario();
     UsuarioDAO usrDAO = new UsuarioDAO(this);
-    Enviadas env = new Enviadas();
-    EnviadasDAO envDAO = new EnviadasDAO(this);
+    Recebidas rec = new Recebidas();
+    RecebidasDAO recDAO = new RecebidasDAO(this);
     private Handler manipulador = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -43,13 +43,12 @@ public class ListMsgEnviadas extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         usr = usrDAO.retrive();
-        Thread t = new Thread(new ConexaoWWW());
+        Thread t = new Thread(new ListMsgRecebidas.ConexaoWWW());
         t.start();
-        //this.atualiza();
     }
 
     private void atualiza() {
-        setListAdapter(new ArrayAdapter(this, R.layout.enviadas, lista));
+        setListAdapter(new ArrayAdapter(this, R.layout.recebidas, lista));
     }
 
     private class ConexaoWWW implements Runnable {
@@ -79,17 +78,17 @@ public class ListMsgEnviadas extends ListActivity {
                     do {
                         mensagen = dis.readUTF();
                         if (!"FIM".equals(mensagen)) {
-                            Log.i(ConexaoWWW.class.getName(), String.format("Leitura: %s", mensagen));
-                            lista = envDAO.listAll();
+                            Log.i(ListMsgRecebidas.ConexaoWWW.class.getName(), String.format("Leitura: %s", mensagen));
+                            lista = recDAO.listAll();
                             if (lista != null) {
                                 if (lista.size() <= contaEnviadas) {
-                                    env.setConteudo(mensagen);
-                                    envDAO.create(env);
+                                    rec.setConteudo(mensagen);
+                                    recDAO.create(rec);
                                 }
                             } else {
-                                env.setCod_msg(contaEnviadas);
-                                env.setConteudo(mensagen);
-                                envDAO.create(env);
+                                rec.setCod_msg(contaEnviadas);
+                                rec.setConteudo(mensagen);
+                                recDAO.create(rec);
                             }
                             contaEnviadas++;
                         }
@@ -100,7 +99,7 @@ public class ListMsgEnviadas extends ListActivity {
                     System.out.println("Código invalido: " + msg);
                 }
             } catch (Exception ex) {
-                lista = envDAO.listAll();
+                lista = recDAO.listAll();
                 ex.printStackTrace();
             }
         }

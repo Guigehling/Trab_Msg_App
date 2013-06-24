@@ -68,4 +68,9 @@ public class Enviadas {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return conteudo;
+    }
 }

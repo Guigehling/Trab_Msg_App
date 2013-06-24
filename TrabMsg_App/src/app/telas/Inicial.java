@@ -40,9 +40,6 @@ public class Inicial extends Activity {
         usr.setCod_usr(1);
         usr.setLogado(1);
         usrDAO.create(usr);
-        Usuario usr2 = new Usuario();
-        usr2 = usrDAO.retrive();
-        System.out.println(usr2.getLogin());
     }
 
     public void testLogin() {

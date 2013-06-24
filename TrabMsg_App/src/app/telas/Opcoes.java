@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.Toast;
 import app.objeto.ItemOpcao;
 import java.util.ArrayList;
 
@@ -46,7 +45,7 @@ public class Opcoes extends Activity implements OnItemClickListener {
             startActivity(intent);
         }
         if ("Recebidas".equals(item.getAcao())) {
-            Intent intent = new Intent(this, ListMsgEnviadas.class);
+            Intent intent = new Intent(this, ListMsgRecebidas.class);
             startActivity(intent);
         }
         if ("Enviadas".equals(item.getAcao())) {
