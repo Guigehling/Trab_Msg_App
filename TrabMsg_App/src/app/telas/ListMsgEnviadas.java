@@ -49,7 +49,7 @@ public class ListMsgEnviadas extends ListActivity {
     }
 
     private void atualiza() {
-        setListAdapter(new ArrayAdapter(this, R.layout.enviadas, lista));
+        setListAdapter(new ArrayAdapter(this, R.layout.listmsgenviadas, lista));
     }
 
     private class ConexaoWWW implements Runnable {
@@ -57,7 +57,7 @@ public class ListMsgEnviadas extends ListActivity {
         public void run() {
             int contaEnviadas = 0;
             try {
-                URL urlObj = new URL("http://10.13.1.81:8080/TrabMsgWeb/ServletMsg");
+                URL urlObj = new URL("http://192.168.0.100:8080/TrabMsgWeb/ServletMsg");
                 HttpURLConnection httpConn = (HttpURLConnection) urlObj.openConnection();
                 httpConn.setDoInput(true);
                 httpConn.setDoOutput(true);

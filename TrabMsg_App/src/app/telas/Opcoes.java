@@ -41,7 +41,7 @@ public class Opcoes extends Activity implements OnItemClickListener {
         //Pega o item que foi selecionado.
         ItemOpcao item = lista.getItem(i);
         if ("Nova Msg".equals(item.getAcao())) {
-            Intent intent = new Intent(this, ListMsgEnviadas.class);
+            Intent intent = new Intent(this, FrmNovaMsg.class);
             startActivity(intent);
         }
         if ("Recebidas".equals(item.getAcao())) {

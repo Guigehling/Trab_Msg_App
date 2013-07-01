@@ -1,3 +1,7 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package app.telas;
 
 import android.app.Activity;
@@ -14,40 +18,38 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class Inicial extends Activity {
+/**
+ *
+ * @author Guilherme Gehling
+ */
+public class FrmNovaMsg extends Activity {
 
-    private String msg;
+    private String retorno;
+    private UsuarioDAO usrDAO = new UsuarioDAO(this);
+    private Usuario usr = new Usuario();
     private Handler manipulador = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            testLogin();
+            envia();
         }
     };
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+    public void onCreate(Bundle icicle) {
+        super.onCreate(icicle);
+        setContentView(R.layout.frmnovamsg);
     }
 
-    public void onClickbtLogin(View v) throws InterruptedException {
-        Thread t = new Thread(new ConexaoWWW());
+    public void onClickBtEnviar(View v) {
+        usr = usrDAO.retrive();
+        Thread t = new Thread(new FrmNovaMsg.ConexaoWWW());
         t.start();
-        EditText txtLogin = (EditText) findViewById(R.id.txtLogin);
-        UsuarioDAO usrDAO = new UsuarioDAO(this);
-        Usuario usr = new Usuario();
-        usr.setLogin(txtLogin.getText().toString());
-        usr.setCod_usr(1);
-        usr.setLogado(1);
-        usrDAO.create(usr);
     }
 
-    public void testLogin() {
-        if ("Ok".equals(msg)) {
+    public void envia() {
+        if ("OK".equals(retorno)) {
             Intent intent = new Intent(this, Opcoes.class);
             startActivity(intent);
-        } else {
-            System.out.println("Erro!");
         }
     }
 
@@ -55,7 +57,6 @@ public class Inicial extends Activity {
 
         public void run() {
             try {
-                //URL("http://192.168.0.100:8080/TrabMsgWeb/ServletMsg");
                 URL urlObj = new URL("http://192.168.0.100:8080/TrabMsgWeb/ServletMsg");
                 HttpURLConnection httpConn = (HttpURLConnection) urlObj.openConnection();
                 httpConn.setDoInput(true);
@@ -66,19 +67,26 @@ public class Inicial extends Activity {
                 httpConn.setRequestProperty("Content-Language", "pt-BR");
                 httpConn.setRequestProperty("Accept", "application/octet-stream");
                 httpConn.setRequestProperty("Connection", "close");
-                EditText txtLogin = (EditText) findViewById(R.id.txtLogin);
-                EditText txtSenha = (EditText) findViewById(R.id.txtSenha);
-                String login, senha;
-                login = txtLogin.getText().toString();
-                senha = txtSenha.getText().toString();
+
+                EditText txtcontato = (EditText) findViewById(R.id.txtContato);
+                EditText txtmensagem = (EditText) findViewById(R.id.txtMensagem);
+
+                String destinatario, conteudo;
+                destinatario = txtcontato.getText().toString();
+                conteudo = txtcontato.getText().toString();
+
                 OutputStream os = httpConn.getOutputStream();
-                os.write(("acao=Logar&login=" + login + "&senha=" + senha).getBytes());
+                os.write(("acao=Enviadas&login=" + usr.getLogin() + "&dest=" + destinatario + "&conteudo=" + conteudo + "&opc=Salvar").getBytes());
                 os.close();
                 String ret = httpConn.getResponseMessage();
                 int code = httpConn.getResponseCode();
-                DataInputStream dis = new DataInputStream(httpConn.getInputStream());
-                msg = dis.readUTF();
+                if (code == httpConn.HTTP_OK) {
+                    DataInputStream dis = new DataInputStream(httpConn.getInputStream());
+                    retorno = dis.readUTF();
+                    dis.close();
+                }
                 manipulador.sendEmptyMessage(0);
+
             } catch (Exception ex) {
 //                Display display = Display.getDisplay(mid);
 //                Alert alert = new Alert("Informação");

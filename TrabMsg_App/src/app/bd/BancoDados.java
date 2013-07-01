@@ -28,10 +28,10 @@ public class BancoDados extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqld, int i, int i1) {
-        sqld.execSQL("DROP TABLE IF EXISTS enviadas;");
-        sqld.execSQL("DROP TABLE IF EXISTS recebidas;");
-        sqld.execSQL("DROP TABLE IF EXISTS usuario;");
-        this.onCreate(sqld);
+    public void onUpgrade(SQLiteDatabase sqldb, int i, int i1) {
+        sqldb.execSQL("DROP TABLE IF EXISTS enviadas;");
+        sqldb.execSQL("DROP TABLE IF EXISTS recebidas;");
+        sqldb.execSQL("DROP TABLE IF EXISTS usuario;");
+        this.onCreate(sqldb);
     }
 }

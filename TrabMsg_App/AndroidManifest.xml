@@ -17,6 +17,8 @@
         <activity android:name="ListMsgEnviadas" 
                   android:label="Msg. Enviadas"/>
         <activity android:name="ListMsgRecebidas" 
-                          android:label="Msg. Recebidas"/>
+                  android:label="Msg. Recebidas"/>
+        <activity android:name="FrmNovaMsg" 
+                  android:label="Nova Mensagem"/>
     </application>
 </manifest> 
