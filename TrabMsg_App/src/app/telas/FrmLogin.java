@@ -1,6 +1,7 @@
 package app.telas;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,7 +15,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class Inicial extends Activity {
+public class FrmLogin extends Activity {
 
     private String msg;
     private Handler manipulador = new Handler() {
@@ -27,27 +28,33 @@ public class Inicial extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.frmlogin);
+        UsuarioDAO usrDAO = new UsuarioDAO(this);
+        Usuario usr = usrDAO.retrive();
+        if (usr != null) {
+            Intent intent = new Intent(this, Opcoes.class);
+            startActivity(intent);
+        }
     }
 
     public void onClickbtLogin(View v) throws InterruptedException {
         Thread t = new Thread(new ConexaoWWW());
         t.start();
-        EditText txtLogin = (EditText) findViewById(R.id.txtLogin);
-        UsuarioDAO usrDAO = new UsuarioDAO(this);
-        Usuario usr = new Usuario();
-        usr.setLogin(txtLogin.getText().toString());
-        usr.setCod_usr(1);
-        usr.setLogado(1);
-        usrDAO.create(usr);
     }
 
     public void testLogin() {
         if ("Ok".equals(msg)) {
+            EditText txtLogin = (EditText) findViewById(R.id.txtLogin);
+            UsuarioDAO usrDAO = new UsuarioDAO(this);
+            Usuario usr = new Usuario();
+            usr.setLogin(txtLogin.getText().toString());
+            usr.setCod_usr(1);
+            usr.setLogado(1);
+            usrDAO.create(usr);
             Intent intent = new Intent(this, Opcoes.class);
             startActivity(intent);
         } else {
-            System.out.println("Erro!");
+            new AlertDialog.Builder(this).setTitle("Aviso!!").setMessage("Falha na Conexão!").setNeutralButton("OK", null).show();
         }
     }
 
@@ -55,8 +62,7 @@ public class Inicial extends Activity {
 
         public void run() {
             try {
-                //URL("http://192.168.0.100:8080/TrabMsgWeb/ServletMsg");
-                URL urlObj = new URL("http://192.168.0.100:8080/TrabMsgWeb/ServletMsg");
+                URL urlObj = new URL("http://192.168.0.101:8080/TrabMsgWeb/ServletMsg");
                 HttpURLConnection httpConn = (HttpURLConnection) urlObj.openConnection();
                 httpConn.setDoInput(true);
                 httpConn.setDoOutput(true);
@@ -80,10 +86,8 @@ public class Inicial extends Activity {
                 msg = dis.readUTF();
                 manipulador.sendEmptyMessage(0);
             } catch (Exception ex) {
-//                Display display = Display.getDisplay(mid);
-//                Alert alert = new Alert("Informação");
-//                alert.setString("Erro na conexão!");
-//                display.setCurrent(alert);
+                msg = "Erro";
+                manipulador.sendEmptyMessage(0);
                 ex.printStackTrace();
             }
         }

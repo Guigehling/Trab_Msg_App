@@ -36,7 +36,7 @@ public class UsuarioDAO {
     }
 
     public Usuario retrive() {
-        Usuario usr = new Usuario();
+        Usuario usr = null;
         BancoDados bd = new BancoDados(context);
         SQLiteDatabase conn = bd.getWritableDatabase();
         Cursor cursor = conn.rawQuery("SELECT * FROM usuario", null);
@@ -50,6 +50,24 @@ public class UsuarioDAO {
         }
         conn.close();
         return usr;
+    }
+
+    public void update(Usuario usuario) {
+        BancoDados bd = new BancoDados(context);
+        SQLiteDatabase conn = bd.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        String strFilter = "cod_usr=" + 1;
+        valores.put("cod_usr", 1);
+        valores.put("login", usuario.getLogin());
+        valores.put("logado", usuario.getLogado());
+        conn.update("usuario", valores, null, null);
+        conn.close();
+    }
+
+    public void delete() {
+        BancoDados bd = new BancoDados(context);
+        SQLiteDatabase conn = bd.getWritableDatabase();
+        conn.delete("usuario", null, null);
     }
 
     public List<Usuario> listContact(Usuario logado) {

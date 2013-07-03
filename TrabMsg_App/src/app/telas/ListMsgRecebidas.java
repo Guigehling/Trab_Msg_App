@@ -4,14 +4,20 @@
  */
 package app.telas;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import app.bean.Recebidas;
 import app.bean.Usuario;
+import app.dao.EnviadasDAO;
 import app.dao.RecebidasDAO;
 import app.dao.UsuarioDAO;
 import java.io.DataInputStream;
@@ -47,6 +53,27 @@ public class ListMsgRecebidas extends ListActivity {
         t.start();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menulistmsgrecebidas, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.btLimparRecebidas:
+                RecebidasDAO recebidas = new RecebidasDAO(this);
+                recebidas.delete();
+                new AlertDialog.Builder(this).setTitle("Aviso!!").setMessage("Mensagens Excluidas!").show();
+                Intent intent = new Intent(this, Opcoes.class);
+                startActivity(intent);
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
     private void atualiza() {
         setListAdapter(new ArrayAdapter(this, R.layout.listmsgrecebidas, lista));
     }
@@ -54,9 +81,9 @@ public class ListMsgRecebidas extends ListActivity {
     private class ConexaoWWW implements Runnable {
 
         public void run() {
-            int contaEnviadas = 0;
+            int contaRecebidas = 0;
             try {
-                URL urlObj = new URL("http://192.168.0.100:8080/TrabMsgWeb/ServletMsg");
+                URL urlObj = new URL("http://192.168.0.101:8080/TrabMsgWeb/ServletMsg");
                 HttpURLConnection httpConn = (HttpURLConnection) urlObj.openConnection();
                 httpConn.setDoInput(true);
                 httpConn.setDoOutput(true);
@@ -67,7 +94,7 @@ public class ListMsgRecebidas extends ListActivity {
                 httpConn.setRequestProperty("Accept", "application/octet-stream");
                 httpConn.setRequestProperty("Connection", "close");
                 OutputStream os = httpConn.getOutputStream();
-                os.write(("acao=Enviadas&login=" + usr.getLogin() + "&opc=Listar").getBytes());
+                os.write(("acao=Recebidas&login=" + usr.getLogin() + "&opc=Listar").getBytes());
                 os.close();
                 String msg = httpConn.getResponseMessage();
                 int code = httpConn.getResponseCode();
@@ -81,16 +108,16 @@ public class ListMsgRecebidas extends ListActivity {
                             Log.i(ListMsgRecebidas.ConexaoWWW.class.getName(), String.format("Leitura: %s", mensagen));
                             lista = recDAO.listAll();
                             if (lista != null) {
-                                if (lista.size() <= contaEnviadas) {
+                                if (lista.size() <= contaRecebidas) {
                                     rec.setConteudo(mensagen);
                                     recDAO.create(rec);
                                 }
                             } else {
-                                rec.setCod_msg(contaEnviadas);
+                                rec.setCod_msg(contaRecebidas);
                                 rec.setConteudo(mensagen);
                                 recDAO.create(rec);
                             }
-                            contaEnviadas++;
+                            contaRecebidas++;
                         }
                     } while (!"FIM".equals(mensagen) && mensagen != null);
                     manipulador.sendEmptyMessage(0);

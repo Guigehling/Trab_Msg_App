@@ -10,6 +10,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import app.bd.BancoDados;
 import app.bean.Enviadas;
+import app.bean.Recebidas;
+import app.bean.Usuario;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,41 @@ public class EnviadasDAO {
         valores.put("destinatario", mensagem.getDestinatario());
         conn.insert("enviadas", null, valores);
         conn.close();
+    }
+
+    public Enviadas retrive() {
+        Enviadas env = null;
+        BancoDados bd = new BancoDados(context);
+        SQLiteDatabase conn = bd.getWritableDatabase();
+        Cursor cursor = conn.rawQuery("SELECT * FROM usuario", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Enviadas enviada = new Enviadas();
+            enviada.setCod_msg(cursor.getInt(0));
+            enviada.setConteudo(cursor.getString(1));
+            enviada.setDestinatario(cursor.getInt(1));
+            env = enviada;
+            cursor.moveToNext();
+        }
+        conn.close();
+        return env;
+    }
+
+    public void update(Enviadas enviada) {
+        BancoDados bd = new BancoDados(context);
+        SQLiteDatabase conn = bd.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        valores.put("cod_msg", enviada.getCod_msg());
+        valores.put("conteudo", enviada.getConteudo());
+        valores.put("destinatario", enviada.getDestinatario());
+        conn.update("enviadas", valores, null, null);
+        conn.close();
+    }
+
+    public void delete() {
+        BancoDados bd = new BancoDados(context);
+        SQLiteDatabase conn = bd.getWritableDatabase();
+        conn.delete("enviadas", null, null);
     }
 
     public List<Enviadas> listAll() {

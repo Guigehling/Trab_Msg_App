@@ -5,13 +5,20 @@
 package app.telas;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import app.dao.EnviadasDAO;
+import app.dao.RecebidasDAO;
+import app.dao.UsuarioDAO;
 import app.objeto.ItemOpcao;
 import java.util.ArrayList;
 
@@ -52,9 +59,32 @@ public class Opcoes extends Activity implements OnItemClickListener {
             Intent intent = new Intent(this, ListMsgEnviadas.class);
             startActivity(intent);
         }
+    }
 
-        //Demostração
-        //Toast.makeText(this, "Você Clicou em: " + item.getAcao(), Toast.LENGTH_LONG).show();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menuopcao, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.btLimparTudo:
+                UsuarioDAO usr = new UsuarioDAO(this);
+                RecebidasDAO rec = new RecebidasDAO(this);
+                EnviadasDAO env = new EnviadasDAO(this);
+                rec.delete();
+                env.delete();
+                usr.delete();
+                new AlertDialog.Builder(this).setTitle("Aviso!!").setMessage("Seus Registros Foram Excluidos!").show();
+                Intent intent = new Intent(this, FrmLogin.class);
+                startActivity(intent);
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     private void createListView() {
@@ -74,6 +104,6 @@ public class Opcoes extends Activity implements OnItemClickListener {
         //Define o Adapter
         listView.setAdapter(lista);
         //Cor quando a lista é selecionada para ralagem.
-        listView.setCacheColorHint(Color.TRANSPARENT);
+        listView.setCacheColorHint(Color.CYAN);
     }
 }

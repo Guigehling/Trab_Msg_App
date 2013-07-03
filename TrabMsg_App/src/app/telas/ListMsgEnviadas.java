@@ -4,15 +4,21 @@
  */
 package app.telas;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import app.bean.Enviadas;
 import app.bean.Usuario;
 import app.dao.EnviadasDAO;
+import app.dao.RecebidasDAO;
 import app.dao.UsuarioDAO;
 import java.io.DataInputStream;
 import java.io.OutputStream;
@@ -45,7 +51,28 @@ public class ListMsgEnviadas extends ListActivity {
         usr = usrDAO.retrive();
         Thread t = new Thread(new ConexaoWWW());
         t.start();
-        //this.atualiza();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menulistmsgenviadas, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.btLimparEnviadas:
+                EnviadasDAO enviadas = new EnviadasDAO(this);
+                enviadas.delete();
+                new AlertDialog.Builder(this).setTitle("Aviso!!").setMessage("Mensagens Excluidas!").show();
+                //new AlertDialog.Builder(this).setTitle("Aviso!!").setMessage("Mensagens Excluidas!").setNeutralButton("OK", null).show();
+                Intent intent = new Intent(this, Opcoes.class);
+                startActivity(intent);
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     private void atualiza() {
@@ -57,7 +84,7 @@ public class ListMsgEnviadas extends ListActivity {
         public void run() {
             int contaEnviadas = 0;
             try {
-                URL urlObj = new URL("http://192.168.0.100:8080/TrabMsgWeb/ServletMsg");
+                URL urlObj = new URL("http://192.168.0.101:8080/TrabMsgWeb/ServletMsg");
                 HttpURLConnection httpConn = (HttpURLConnection) urlObj.openConnection();
                 httpConn.setDoInput(true);
                 httpConn.setDoOutput(true);
