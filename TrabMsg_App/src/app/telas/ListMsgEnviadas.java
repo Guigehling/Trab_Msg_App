@@ -121,6 +121,7 @@ public class ListMsgEnviadas extends ListActivity {
                             contaEnviadas++;
                         }
                     } while (!"FIM".equals(mensagen) && mensagen != null);
+                    lista = envDAO.listAll();
                     manipulador.sendEmptyMessage(0);
                     dis.close();
                 } else {

@@ -70,11 +70,9 @@ public class FrmNovaMsg extends Activity {
 
                 EditText txtcontato = (EditText) findViewById(R.id.txtContato);
                 EditText txtmensagem = (EditText) findViewById(R.id.txtMensagem);
-
                 String destinatario, conteudo;
                 destinatario = txtcontato.getText().toString();
-                conteudo = txtcontato.getText().toString();
-
+                conteudo = txtmensagem.getText().toString();
                 OutputStream os = httpConn.getOutputStream();
                 os.write(("acao=Enviadas&login=" + usr.getLogin() + "&dest=" + destinatario + "&conteudo=" + conteudo + "&opc=Salvar").getBytes());
                 os.close();
@@ -86,12 +84,7 @@ public class FrmNovaMsg extends Activity {
                     dis.close();
                 }
                 manipulador.sendEmptyMessage(0);
-
             } catch (Exception ex) {
-//                Display display = Display.getDisplay(mid);
-//                Alert alert = new Alert("Informação");
-//                alert.setString("Erro na conexão!");
-//                display.setCurrent(alert);
                 ex.printStackTrace();
             }
         }

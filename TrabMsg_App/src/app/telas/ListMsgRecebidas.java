@@ -120,6 +120,7 @@ public class ListMsgRecebidas extends ListActivity {
                             contaRecebidas++;
                         }
                     } while (!"FIM".equals(mensagen) && mensagen != null);
+                    lista = recDAO.listAll();
                     manipulador.sendEmptyMessage(0);
                     dis.close();
                 } else {
